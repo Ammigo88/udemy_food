@@ -131,25 +131,36 @@ window.addEventListener('DOMContentLoaded', () => {
         modal = document.querySelector('.modal'),
         modalCloseBtn = document.querySelector('[data-close]');
 
+    // modalTrigger.forEach(btn => {
 
-    console.log(modal);
+    //     btn.addEventListener('click', () => {
+    //     // modal.classList.add('show');
+    //     // modal.classList.remove('hide');
+    
+    //     // !!! можно через toggle
+    //     modal.classList.toggle('show');
+
+    //     // убираем прокрутку сайта, пока модальное окно открыто
+    //     document.body.style.overflow = 'hidden';
+    //     });
+    // });
+
+    // Рефакторим код и создаём функцию открытия модального окна
+    function openModal() {
+        modal.classList.toggle('show');
+        document.body.style.overflow = 'hidden';
+
+        // если пользователь сам открыл модальное окно - отменяем modalTimerId
+        // т.е. отменяем автоматическое открытие модального окна
+        clearInterval(modalTimerId);
+    }
 
     modalTrigger.forEach(btn => {
-
-        btn.addEventListener('click', () => {
-        // modal.classList.add('show');
-        // modal.classList.remove('hide');
-    
-        // !!! можно через toggle
-        modal.classList.toggle('show');
-
-        // убираем прокрутку сайта, пока модальное окно открыто
-        document.body.style.overflow = 'hidden';
-        });
+        btn.addEventListener('click', openModal);
     });
 
-    // создаём функцию закрытия модального окна
-    function closeModal () {
+    // Рефакторим код и создаём функцию закрытия модального окна
+    function closeModal() {
         modal.classList.toggle('show');
         document.body.style.overflow = '';
     }
@@ -183,6 +194,36 @@ window.addEventListener('DOMContentLoaded', () => {
             closeModal();
         }
     });
+
+    // всплывающее модальное окно через определенный промежуток времени
+    const modalTimerId = setTimeout(openModal, 3000);
+
+    // открытие модального окна, когда пользователь долистал страницу до конца
+    // window.addEventListener('scroll', () => {
+    //     // сравниваем контент, где пользователь находится с полным контентом странички
+    //     // как только они совпадают, значит пользователь долистал страницу до конца
+    //     if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+    //         openModal();
+    //     }
+    // });
+
+    // Рефакторим код и создаём функцию скролла
+    function showModalByScroll() {
+        // сравниваем контент, где пользователь находится с полным контентом странички
+        // как только они совпадают, значит пользователь долистал страницу до конца
+        if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+            openModal();
+            // удаляем обработичк событий, чтобы модальное окно при скролле открылось лишь один раз
+            window.removeEventListener('scroll', showModalByScroll);
+        }
+    }
+
+    window.addEventListener('scroll', showModalByScroll);
+
+
+
+
+
 
 
 });
