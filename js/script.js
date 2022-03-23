@@ -1,38 +1,36 @@
-'use strict';
+"use strict";
 
-window.addEventListener('DOMContentLoaded', () => {
-
+window.addEventListener("DOMContentLoaded", () => {
     // Tabs
 
-    const tabs = document.querySelectorAll('.tabheader__item'),
-        tabsContent = document.querySelectorAll('.tabcontent'),
-        tabsParent = document.querySelector('.tabheader__items');
+    const tabs = document.querySelectorAll(".tabheader__item"),
+        tabsContent = document.querySelectorAll(".tabcontent"),
+        tabsParent = document.querySelector(".tabheader__items");
 
     function hideTabContent() {
-        tabsContent.forEach(item => {
-            item.classList.add('hide');
-            item.classList.remove('show', 'fade');
+        tabsContent.forEach((item) => {
+            item.classList.add("hide");
+            item.classList.remove("show", "fade");
         });
 
-        tabs.forEach(item => {
-            item.classList.remove('tabheader__item_active');
+        tabs.forEach((item) => {
+            item.classList.remove("tabheader__item_active");
         });
-
     }
 
     function showTabContent(i = 0) {
-        tabsContent[i].classList.add('show', 'fade');
-        tabsContent[i].classList.remove('hide');
-        tabs[i].classList.add('tabheader__item_active');
+        tabsContent[i].classList.add("show", "fade");
+        tabsContent[i].classList.remove("hide");
+        tabs[i].classList.add("tabheader__item_active");
     }
 
     hideTabContent();
     showTabContent();
 
-    tabsParent.addEventListener('click', (event) => {
+    tabsParent.addEventListener("click", (event) => {
         const target = event.target;
 
-        if (target && target.classList.contains('tabheader__item')) {
+        if (target && target.classList.contains("tabheader__item")) {
             tabs.forEach((item, i) => {
                 if (target == item) {
                     hideTabContent();
@@ -42,8 +40,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-
-    // Timer 
+    // Timer
 
     // Вёрстка: у нас есть блок timer, в котором есть отдельные мини-блоки,
     // в которых есть span обозначенные определёнными идентификаторами
@@ -54,7 +51,7 @@ window.addEventListener('DOMContentLoaded', () => {
     //    вычислим время, которое установелно у пользователя и найти разницу, которую будем отображать на экране
     // 3. функция, которая будет заниматься обновлением нашего таймера
 
-    const deadline = '2022-03-20';
+    const deadline = "2022-03-20";
 
     // разница между дедлайном и нашем текущем временем
     function getTimRemaining(endtime) {
@@ -64,8 +61,7 @@ window.addEventListener('DOMContentLoaded', () => {
             // 1000 мс * 60 (получаем кол-во мс в минуте) * 60 (получаем кол-во мс в часе) * 24 (получаем кол-во мс в сутках)
 
             // получаем общее кол-во часов, которое осталось в таймере
-            hours = Math.floor((t / (1000 * 60 * 60) % 24)),
-
+            hours = Math.floor((t / (1000 * 60 * 60)) % 24),
             // минуты
             minutes = Math.floor((t / 1000 / 60) % 60),
             // секунды
@@ -74,33 +70,31 @@ window.addEventListener('DOMContentLoaded', () => {
         // чтобы вернуть переменные наружу (локально)
         // возвращаем объект
         return {
-            'total': t,
-            'days': days,
-            'hours': hours,
-            'minutes': minutes,
-            'seconds': seconds
+            total: t,
+            days: days,
+            hours: hours,
+            minutes: minutes,
+            seconds: seconds,
         };
     }
 
     // функция устанавливающая наши часы на страничку
     function setClock(selector, endtime) {
         const timer = document.querySelector(selector),
-            days = timer.querySelector('#days'),
-            hours = timer.querySelector('#hours'),
-            minutes = timer.querySelector('#minutes'),
-            seconds = timer.querySelector('#seconds'),
+            days = timer.querySelector("#days"),
+            hours = timer.querySelector("#hours"),
+            minutes = timer.querySelector("#minutes"),
+            seconds = timer.querySelector("#seconds"),
             // для запуска функции updateClock каждую секунду
             timeInterval = setInterval(updateClock, 1000),
-
-            promTitle = document.querySelector('#promtitle'),
-            promTimer = document.querySelector('.timer');
+            promTitle = document.querySelector("#promtitle"),
+            promTimer = document.querySelector(".timer");
 
         // запускаем функцию, чтобы не было мерцания/моргания счётчика
         updateClock();
         // функция, обновляющая таймер каждую секунду
         function updateClock() {
             let t = getTimRemaining(endtime);
-
 
             days.innerHTML = t.days;
             hours.innerHTML = t.hours;
@@ -117,26 +111,24 @@ window.addEventListener('DOMContentLoaded', () => {
                 // minutes.innerHTML = 0;
                 // seconds.innerHTML = 0;
             }
-
         }
     }
 
-
     // устанавливаем наши часы и проверяем
-    setClock('.timer', deadline);
+    setClock(".timer", deadline);
 
     // Modal
 
-    const modalTrigger = document.querySelectorAll('[data-modal]'),
-        modal = document.querySelector('.modal'),
-        modalCloseBtn = document.querySelector('[data-close]');
+    const modalTrigger = document.querySelectorAll("[data-modal]"),
+        modal = document.querySelector(".modal"),
+        modalCloseBtn = document.querySelector("[data-close]");
 
     // modalTrigger.forEach(btn => {
 
     //     btn.addEventListener('click', () => {
     //     // modal.classList.add('show');
     //     // modal.classList.remove('hide');
-    
+
     //     // !!! можно через toggle
     //     modal.classList.toggle('show');
 
@@ -147,25 +139,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Рефакторим код и создаём функцию открытия модального окна
     function openModal() {
-        modal.classList.toggle('show');
-        document.body.style.overflow = 'hidden';
+        modal.classList.toggle("show");
+        document.body.style.overflow = "hidden";
 
         // если пользователь сам открыл модальное окно - отменяем modalTimerId
         // т.е. отменяем автоматическое открытие модального окна
         clearInterval(modalTimerId);
     }
 
-    modalTrigger.forEach(btn => {
-        btn.addEventListener('click', openModal);
+    modalTrigger.forEach((btn) => {
+        btn.addEventListener("click", openModal);
     });
 
     // Рефакторим код и создаём функцию закрытия модального окна
     function closeModal() {
-        modal.classList.toggle('show');
-        document.body.style.overflow = '';
+        modal.classList.toggle("show");
+        document.body.style.overflow = "";
     }
-    
-    modalCloseBtn.addEventListener('click', closeModal);
+
+    modalCloseBtn.addEventListener("click", closeModal);
 
     // переписываем код ниже и используем функцию closeModal
     // modalCloseBtn.addEventListener('click', () => {
@@ -179,7 +171,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // });
 
     // скрываем модальное окно при клике на область вне этого окна
-    modal.addEventListener('click', (e) => {
+    modal.addEventListener("click", (e) => {
         if (e.target === modal) {
             // modal.classList.toggle('show');
             // document.body.style.overflow = '';
@@ -189,14 +181,14 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.addEventListener('keydown', (e) => {
-        if (e.code === 'Escape' && modal.classList.contains('show')) {
+    document.addEventListener("keydown", (e) => {
+        if (e.code === "Escape" && modal.classList.contains("show")) {
             closeModal();
         }
     });
 
     // всплывающее модальное окно через определенный промежуток времени
-    const modalTimerId = setTimeout(openModal, 3000);
+    // const modalTimerId = setTimeout(openModal, 3000);
 
     // открытие модального окна, когда пользователь долистал страницу до конца
     // window.addEventListener('scroll', () => {
@@ -211,19 +203,81 @@ window.addEventListener('DOMContentLoaded', () => {
     function showModalByScroll() {
         // сравниваем контент, где пользователь находится с полным контентом странички
         // как только они совпадают, значит пользователь долистал страницу до конца
-        if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+        if (
+            window.pageYOffset + document.documentElement.clientHeight >=
+            document.documentElement.scrollHeight
+        ) {
             openModal();
             // удаляем обработичк событий, чтобы модальное окно при скролле открылось лишь один раз
-            window.removeEventListener('scroll', showModalByScroll);
+            window.removeEventListener("scroll", showModalByScroll);
         }
     }
 
-    window.addEventListener('scroll', showModalByScroll);
+    window.addEventListener("scroll", showModalByScroll);
 
+    // Используем классы для карточек
+    class MenuCard {
+        constructor(src, alt, title, descr, price, parentSelector) {
+            this.src = src;
+            this.alt = alt;
+            this.title = title;
+            this.descr = descr;
+            this.price = price;
+            this.parent = document.querySelector(parentSelector);
+            this.transfer = 27;
+            this.changeToUAH();
+        }
 
+        // переводим цену из долларов в гривны
+        changeToUAH() {
+            this.price = this.price * this.transfer;
+        }
 
+        // render для формирования вёрстки
+        render() {
+            const element = document.createElement('div');
+            element.innerHTML = `
+                <div class="menu__item">
+                    <img src=${this.src} alt=${this.alt}>
+                    <h3 class="menu__item-subtitle">${this.title}</h3>
+                    <div class="menu__item-descr">${this.descr}</div>
+                    <div class="menu__item-divider"></div>
+                    <div class="menu__item-price">
+                        <div class="menu__item-cost">Цена:</div>
+                        <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+                </div>
+            `;
+            this.parent.append(element);
+        }
+    }
 
+    new MenuCard(
+        "img/tabs/vegy.jpg",
+        "vegy",
+        'Меню "Фитнес"',
+        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+        9,
+        '.menu .container'
+    ).render();
 
+    new MenuCard(
+        "img/tabs/elite.jpg",
+        "elite",
+        'Меню “Премиум”',
+        'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+        14,
+        '.menu .container'
+    ).render();
 
+    new MenuCard(
+        "img/tabs/post.jpg",
+        "post",
+        'Меню "Постное"',
+        'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+        21,
+        '.menu .container'
+    ).render();
+     
 
 });
+
